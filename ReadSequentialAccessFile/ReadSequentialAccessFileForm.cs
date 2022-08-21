@@ -9,12 +9,15 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 using BankLibrary;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Runtime.Serialization;
 
 namespace ReadSequentialAccessFile
 {
     public partial class ReadSequentialAccessFileForm : BankUIForm
     {
-        private StreamReader fileReader;  // Reads data from a text file
+        private BinaryFormatter reader = new BinaryFormatter();
+        private FileStream input;  // Reads data from a text file
 
         public ReadSequentialAccessFileForm()
         {
@@ -46,57 +49,48 @@ namespace ReadSequentialAccessFile
                 }
                 else
                 {
-                    try
-                    {
+                   
                         // Create FileStream to obtain read access to file
-                        FileStream input = new FileStream(fileName, FileMode.Open, FileAccess.Read);
-
-                        // Set file from where data is read
-                        fileReader = new StreamReader(input);
+                        input = new FileStream(fileName, FileMode.Open, FileAccess.Read);
 
                         openButton.Enabled = false;  // Disable Open File buttone
                         nextButton.Enabled = true;
-                    }
-                    catch (IOException)
-                    {
-                        MessageBox.Show("Error reading from file.", "File error",
-                            MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
+                    
                 }
             }
         }
 
         private void nextButton_Click(object sender, EventArgs e)
         {
+            // Deserialize RecordSerializable and store data in file
             try
             {
-                // Get nest record available in the file
-                var inputRecord = fileReader.ReadLine();
+                // Get next RecordSerializable available from file
+                RecordSerializable record = (RecordSerializable)reader.Deserialize(input);
 
-                if (inputRecord != null)
+                // Store values in temporary string array
+                var values = new string[]
                 {
-                    string[] inputFields = inputRecord.Split(',');
+                    record.Account.ToString(),
+                    record.FirstName.ToString(),
+                    record.LastName.ToString(),
+                    record.Balance.ToString()
+                };
 
-                    // Copy string-array values to TextBox values
-                    SetTextBoxValues(inputFields);
-                }
-                else
-                {
-                    // Close StreamReader and underlying file
-                    fileReader.Close();
-                    openButton.Enabled = true;
-                    nextButton.Enabled = false;
-                    ClearTextBoxes();
-
-                    // Notify user if no records in file
-                    MessageBox.Show("No more records in file.", "Error", 
-                        MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+                // Copy string-array values to textbox values
+                SetTextBoxValues(values);
             }
-            catch (IOException)
+            catch (SerializationException)
             {
-                MessageBox.Show("Error reading from file", "Error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                input?.Close();
+                openButton.Enabled = true;
+                nextButton.Enabled = false;
+
+                ClearTextBoxes();
+
+                // Notify user if no serializables in file
+                MessageBox.Show("No more records in file", "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
     }

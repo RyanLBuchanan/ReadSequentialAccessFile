@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32804.467
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReadSequentialAccessFile", "ReadSequentialAccessFile\ReadSequentialAccessFile.csproj", "{6A1FEBA9-1D03-452C-8B4A-B0E1A32A8C48}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6A1FEBA9-1D03-452C-8B4A-B0E1A32A8C48}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A1FEBA9-1D03-452C-8B4A-B0E1A32A8C48}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A1FEBA9-1D03-452C-8B4A-B0E1A32A8C48}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A1FEBA9-1D03-452C-8B4A-B0E1A32A8C48}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C8865ACF-EF5D-4C4F-9226-E7A2CB6B66F3}
+	EndGlobalSection
+EndGlobal
